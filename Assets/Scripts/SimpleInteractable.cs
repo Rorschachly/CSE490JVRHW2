@@ -6,10 +6,12 @@ public class SimpleInteractable : MonoBehaviour
 {
     protected Vector3 interactorHitPosition = Vector3.zero;
     private Animator anim;
-    public float swimSpeed = 2.0f;
+    public float swimSpeed = 5.0f;
     private Vector3 camPosition;
     private Vector3 whalePosition;
     private Vector3 originOfWhale;
+    private bool notBack = false;
+
 
     // Start is called before the first frame update
 
@@ -25,11 +27,14 @@ public class SimpleInteractable : MonoBehaviour
         whalePosition = this.transform.position;
         float deltaDistanceFromOrigin = Vector3.Distance(camPosition, originOfWhale);
         float deltaDistanceFromWhale = Vector3.Distance(camPosition, whalePosition);
-        Debug.Log(deltaDistanceFromWhale);
-        if (deltaDistanceFromOrigin <= 8 && deltaDistanceFromWhale <= 9)
+
+        if (deltaDistanceFromOrigin <= 8 && deltaDistanceFromWhale <= 12)
         {
             this.transform.position += this.transform.forward * Time.deltaTime * swimSpeed;
         }
+        // This keeps track of the distance from the whale and the origin in real time
+        float whaleOffset = Vector3.Distance(originOfWhale, whalePosition);
+
         if (deltaDistanceFromOrigin >= 8 && deltaDistanceFromWhale >= 7.8f) {
             this.transform.position -= this.transform.forward * Time.deltaTime * swimSpeed; 
         }
