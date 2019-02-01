@@ -13,6 +13,13 @@ public class SimpleInteractable : MonoBehaviour
     private bool notBack = false;
 
 
+    public float lookAtTime = 2.0f;  // track for the lookat time
+
+
+
+    private float lookAtCounter = 0.0f;
+
+
     // Start is called before the first frame update
 
     private void Start()
@@ -23,31 +30,39 @@ public class SimpleInteractable : MonoBehaviour
 
     private void Update()
     {
-        camPosition = Camera.main.gameObject.transform.position;
-        whalePosition = this.transform.position;
-        float deltaDistanceFromOrigin = Vector3.Distance(camPosition, originOfWhale);
-        float deltaDistanceFromWhale = Vector3.Distance(camPosition, whalePosition);
+        //camPosition = Camera.main.gameObject.transform.position;
+        //whalePosition = this.transform.position;
+        //float deltaDistanceFromOrigin = Vector3.Distance(camPosition, originOfWhale);
+        //float deltaDistanceFromWhale = Vector3.Distance(camPosition, whalePosition);
 
-        if (deltaDistanceFromOrigin <= 8 && deltaDistanceFromWhale <= 12)
-        {
-            this.transform.position += this.transform.forward * Time.deltaTime * swimSpeed;
-        }
-        // This keeps track of the distance from the whale and the origin in real time
-        float whaleOffset = Vector3.Distance(originOfWhale, whalePosition);
+        //if (deltaDistanceFromOrigin <= 8 && deltaDistanceFromWhale <= 12)
+        //{
+        //    Debug.Log("go forward");
+        //    this.transform.position += this.transform.forward * Time.deltaTime * swimSpeed;
+        //}
+        //// This keeps track of the distance from the whale and the origin in real time
+        //float whaleOffset = Vector3.Distance(originOfWhale, whalePosition);
 
-        if (deltaDistanceFromOrigin >= 8 && deltaDistanceFromWhale >= 7.8f) {
-            this.transform.position -= this.transform.forward * Time.deltaTime * swimSpeed; 
-        }
+        //if (deltaDistanceFromOrigin >= 8 && deltaDistanceFromWhale >= 7.8f)
+        //{
+        //    this.transform.position -= this.transform.forward * Time.deltaTime * swimSpeed;
+        //}
     }
 
     public virtual void OnSelectEnter()
     {
-        anim.SetBool("Gaze", true);
+        lookAtCounter += Time.deltaTime;
+        if (lookAtCounter > lookAtTime)
+        {
+            anim.SetBool("Gaze", true);
+            lookAtCounter = 0.0f;
+        }
+
     }
 
     public virtual void OnSelectExit()
     {
-    
+        lookAtCounter = 0.0f;
         anim.SetBool("Gaze", false);
     }
 
